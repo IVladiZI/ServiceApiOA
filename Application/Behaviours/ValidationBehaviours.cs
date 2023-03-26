@@ -4,11 +4,11 @@ using MediatR;
 namespace Application.Behaviours
 {
 
-    /// <summary>
+    /// <ValidationBehaviours>
     /// With the help of installed nugget dependencies such as validation, auto mapper and mediaTR.
     /// Here it receives a request and a response and implements the pipeline interface.
     /// The validation class receives two types request and response and implements an interface where Irequest and Tresponse are mediaTR's own.
-    /// </summary>
+    /// </ValidationBehaviours>
     /// <typeparam name="Trequest"> Request </typeparam>
     /// <typeparam name="TResponse">Response </typeparam>
     public class ValidationBehaviours<Trequest, TResponse> : IPipelineBehavior<Trequest, TResponse> where Trequest : IRequest<TResponse>
