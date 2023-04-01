@@ -1,6 +1,7 @@
 ﻿using Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace Domain.Entities
     /// </Client>
     public class Client : AuditableBaseEntity
     {
+        [Key]
+        public int ClientId { get; set; }
         public string? Name { get; set; }
         public string? Lastname { get; set; }
         public string? SecondLastName { get; set; }
@@ -19,6 +22,7 @@ namespace Domain.Entities
         private int _age { get; set; }
         public string? Email { get; set; }
         public string? Addres { get; set; }
+        public User? User { get; set; }
         /// <Age>
         /// Customer's age is calculated
         /// </Age>

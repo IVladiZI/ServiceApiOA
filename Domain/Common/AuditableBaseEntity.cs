@@ -13,7 +13,6 @@ namespace Domain.Common
     /// </AuditableBaseEntity>
     public abstract class AuditableBaseEntity
     {
-        public virtual int Id { get; set; }
         public string? CreateUser { get; set; }
         public DateTime CreateDate { get; set; }
         public string? ModifyUser { get; set; }

@@ -2,6 +2,7 @@
 using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Persistence.Contexts
 {
@@ -10,6 +11,10 @@ namespace Persistence.Contexts
     /// </ApplicationDbContext>
     public class ApplicationDbContext : DbContext
     {
+        /// <IDateTimeService>
+        /// In the dependency injection we must enroll the service in this case 
+        /// the IDateTimeService must be enrolled for them must be added in the Shared layer in Services.
+        /// </IDateTimeService>
         private readonly IDateTimeService _dateTimeService;
         /// <ApplicationDbContext>
         /// It helps us to make a tracking behavior with the entityframwork core controlling all the information 
@@ -44,6 +49,14 @@ namespace Persistence.Contexts
                 }
             }
             return base.SaveChangesAsync(cancellationToken);
+        }
+        /// <OnModelCreating>
+        /// This method calls the configurations of the classes and features that will be used in the database.
+        /// </OnModelCreating>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

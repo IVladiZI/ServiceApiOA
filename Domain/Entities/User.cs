@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
@@ -7,8 +8,12 @@ namespace Domain.Entities
     /// </User>
     public class User : AuditableBaseEntity
     {
+        [Key]
+        public int UserId { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public int Level { get; set; }
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
     }
 }
