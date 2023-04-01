@@ -3,6 +3,7 @@ using Persistence;
 using Persistence.Contexts;
 using Shared;
 using System.Reflection;
+using WebAPI.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+//We call UseErrorHandlingMiddleware that we created to customize the API type errors from
+//the program, since this is where the API is started
+app.UseErrorHandlingMiddleware();
 
 app.MapControllers();
 
