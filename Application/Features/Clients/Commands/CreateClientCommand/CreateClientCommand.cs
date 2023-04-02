@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Clients.Commands
+namespace Application.Features.Clients.Commands.CreateClientCommand
 {
     /// <CreateClientCommand>
     /// The class create client command is created where the mediator is inherited and redirected 
