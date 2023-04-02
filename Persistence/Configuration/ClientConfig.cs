@@ -19,33 +19,33 @@ namespace Persistence.Configuration
         public void Configure(EntityTypeBuilder<Client> builder)
         {
             builder.ToTable("Client")
-                .HasOne(x=>x.User)
-                .WithOne(x=>x.Client)
-                .HasPrincipalKey<Client>(x=>x.ClientId)
-                .HasForeignKey<User>(x=>x.UserId);
-            builder.HasKey(x => x.ClientId);
+                .HasOne(x => x.User)
+                .WithOne(x => x.Client)
+                .HasForeignKey<Client>(x => x.UserId);
             builder.Property(x => x.Name)
                 .HasMaxLength(80)
                 .IsRequired();
+            builder.Property(x => x.DocumentNumber)
+                .HasMaxLength(15)
+                .IsRequired();
+            builder.Property(x => x.DocumentComplement)
+                .HasMaxLength(3);
             builder.Property(x => x.Lastname)
-                .HasMaxLength(80)
-                .IsRequired();
+                .HasMaxLength(80);
             builder.Property(x => x.SecondLastName)
-                .HasMaxLength(80)
-                .IsRequired();
+                .HasMaxLength(80);
             builder.Property(x => x.Birthday)
-                .HasMaxLength(80)
-                .IsRequired();
+                .HasMaxLength(80);
             builder.Property(x => x.Email)
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasMaxLength(100);
             builder.Property(x => x.Addres)
-                .HasMaxLength(200)
-                .IsRequired();
+                .HasMaxLength(200);
             builder.Property(x => x.CreateUser)
-                .HasMaxLength(30);
+                .HasMaxLength(30)
+                .IsRequired();
             builder.Property(x => x.ModifyUser)
-                .HasMaxLength(30);
+                .HasMaxLength(30)
+                .IsRequired();
         }
     }
 }

@@ -19,9 +19,8 @@ namespace Persistence.Configuration
         {
             builder.ToTable("User")
                 .HasOne(x => x.Client)
-                .WithOne()
-                .HasPrincipalKey<User>(x => x.ClientId);
-            builder.HasKey(x => x.UserId);
+                .WithOne(x => x.User)
+                .HasForeignKey<Client>(x => x.UserId);
             builder.Property(x => x.UserName)
                 .HasMaxLength(80)
                 .IsRequired();

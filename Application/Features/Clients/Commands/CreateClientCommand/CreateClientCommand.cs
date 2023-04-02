@@ -18,6 +18,8 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
     /// </CreateClientCommand>
     public class CreateClientCommand : IRequest<Response<int>>
     {
+        public string? DocumentNumber { get; set; }
+        public string? DocumentComplement { get; set; }
         public string? Name { get; set; }
         public string? Lastname { get; set; }
         public string? SecondLastName { get; set; }
@@ -37,13 +39,15 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
         /// _repositoryAsync will help us to bring all the functionalities with the DB context
         /// _mapper will help us to map and bring from the GeneralProfile class the mappings we have for the client class.
         /// </summary>
-        private readonly IRepositoryAsync<Client> _repositoryAsync;
+        private readonly IRepositoryAsync<Client> _clientRepositoryAsync;
+        private readonly IRepositoryAsync<User> _userRepositoryAsync;
         private readonly IMapper _mapper;
 
-        public CreateClientCommandHandle(IRepositoryAsync<Client> repositoryAsync, IMapper mapper)
+        public CreateClientCommandHandle(IRepositoryAsync<Client> clientRepositoryAsync, IMapper mapper, IRepositoryAsync<User> userRepositoryAsync)
         {
-            _repositoryAsync = repositoryAsync;
+            _clientRepositoryAsync = clientRepositoryAsync;
             _mapper = mapper;
+            _userRepositoryAsync = userRepositoryAsync;
         }
         /// <summary>
         /// First the clientCommand is mapped to a Client class and 
@@ -55,10 +59,16 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
         /// <returns></returns>
         public async Task<Response<int>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
-            var newRegister = _mapper.Map<Client>(request);
-            var data = await _repositoryAsync.AddAsync(newRegister);
-
-            return new Response<int>(data.ClientId);
+            var newClient = _mapper.Map<Client>(request);
+            User newUser = new()
+            {
+                Client = newClient,
+                UserName = $"{newClient.Name[..1].ToUpper()}{newClient.Lastname.ToUpper()}",
+                Password = newClient.DocumentNumber,
+                Level = 1 
+            };
+            var dataUser = await _userRepositoryAsync.AddAsync(newUser);
+            return new Response<int>(dataUser.UserId);
         }
     }
 }

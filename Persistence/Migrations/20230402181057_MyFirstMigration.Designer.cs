@@ -12,7 +12,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230401184907_MyFirstMigration")]
+    [Migration("20230402181057_MyFirstMigration")]
     partial class MyFirstMigration
     {
         /// <inheritdoc />
@@ -31,7 +31,6 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Addres")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -43,11 +42,20 @@ namespace Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreateUser")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("DocumentComplement")
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<string>("DocumentNumber")
                         .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
+
+                    b.Property<string>("Email")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -60,6 +68,7 @@ namespace Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ModifyUser")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
@@ -73,6 +82,9 @@ namespace Persistence.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("character varying(80)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("ClientId");
 
                     b.ToTable("Client", (string)null);
@@ -85,9 +97,6 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
@@ -121,32 +130,18 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Client", b =>
                 {
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("Domain.Entities.User", "User")
                         .WithOne("Client")
                         .HasForeignKey("Domain.Entities.Client", "ClientId")
-                        .HasPrincipalKey("Domain.Entities.User", "ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.HasOne("Domain.Entities.Client", null)
-                        .WithOne("User")
-                        .HasForeignKey("Domain.Entities.User", "ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Client", b =>
-                {
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Navigation("Client")
-                        .IsRequired();
+                    b.Navigation("Client");
                 });
 #pragma warning restore 612, 618
         }

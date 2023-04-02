@@ -15,14 +15,23 @@ namespace Domain.Entities
     {
         [Key]
         public int ClientId { get; set; }
-        public string? Name { get; set; }
-        public string? Lastname { get; set; }
-        public string? SecondLastName { get; set; }
+        public string? DocumentNumber { get; set; }
+        public string? DocumentComplement { get; set; }
+        public string Name { get; set; }
+        public string Lastname { get; set; }
+        public string SecondLastName { get; set; }
         public DateTime Birthday { get; set; }
         private int _age { get; set; }
         public string? Email { get; set; }
         public string? Addres { get; set; }
+        public int UserId { get; set; }
         public User? User { get; set; }
+        public Client(string name, string lastname, string secondLastName)
+        {
+            Name = name.ToUpper();
+            Lastname = lastname.ToUpper();
+            SecondLastName = secondLastName.ToUpper();
+        }
         /// <Age>
         /// Customer's age is calculated
         /// </Age>
@@ -33,5 +42,6 @@ namespace Domain.Entities
                 return this._age;
             }
         }
+
     }
 }

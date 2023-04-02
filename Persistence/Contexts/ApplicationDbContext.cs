@@ -2,6 +2,7 @@
 using Domain.Common;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace Persistence.Contexts
@@ -16,6 +17,8 @@ namespace Persistence.Contexts
         /// the IDateTimeService must be enrolled for them must be added in the Shared layer in Services.
         /// </IDateTimeService>
         private readonly IDateTimeService _dateTimeService;
+
+        private readonly IConfiguration _configuration;
         /// <ApplicationDbContext>
         /// It helps us to make a tracking behavior with the entityframwork core controlling all the information 
         /// about an entity instance, where it tracks the changes on an entity using the SaveChange, it will handle 
@@ -23,10 +26,11 @@ namespace Persistence.Contexts
         /// </ApplicationDbContext>
         /// <param name="options"></param>
         /// <param name="dateTimeService">With this we place the creation and modification dates</param>
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,IDateTimeService dateTimeService) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDateTimeService dateTimeService, IConfiguration configuration) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             _dateTimeService = dateTimeService;
+            _configuration = configuration;
         }
         public DbSet<Client> Clients { get; set; }
         /// <Task>
@@ -40,10 +44,14 @@ namespace Persistence.Contexts
             {
                 switch (entry.State)
                 {
-                    case EntityState.Added: 
+                    case EntityState.Added:
+                        entry.Entity.CreateUser = _configuration["UsersAuditable:UserCreate"];
+                        entry.Entity.ModifyUser = _configuration["UsersAuditable:UserModify"];
                         entry.Entity.CreateDate = _dateTimeService.NowUtc;
+                        entry.Entity.ModifyDate = _dateTimeService.NowUtc;
                         break;
                     case EntityState.Modified:
+                        entry.Entity.ModifyUser = _configuration["UsersAuditable:UserModify"];
                         entry.Entity.ModifyDate = _dateTimeService.NowUtc;
                         break;
                 }

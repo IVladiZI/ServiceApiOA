@@ -8,6 +8,7 @@ namespace Application.Behaviours
     /// With the help of installed nugget dependencies such as validation, auto mapper and mediaTR.
     /// Here it receives a request and a response and implements the pipeline interface.
     /// The validation class receives two types request and response and implements an interface where Irequest and Tresponse are mediaTR's own.
+    /// This Pipeline is called before it is sent to the business logic or data insertion in order to validate all our filters on the incoming class data.
     /// </ValidationBehaviours>
     /// <typeparam name="Trequest"> Request </typeparam>
     /// <typeparam name="TResponse">Response </typeparam>
