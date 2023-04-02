@@ -1,4 +1,7 @@
-﻿using Application.Wrappres;
+﻿using Application.Interfaces;
+using Application.Wrappres;
+using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -30,9 +33,32 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
     /// </CreateClientCommandHandle>
     public class CreateClientCommandHandle : IRequestHandler<CreateClientCommand, Response<int>>
     {
+        /// <summary>
+        /// _repositoryAsync will help us to bring all the functionalities with the DB context
+        /// _mapper will help us to map and bring from the GeneralProfile class the mappings we have for the client class.
+        /// </summary>
+        private readonly IRepositoryAsync<Client> _repositoryAsync;
+        private readonly IMapper _mapper;
+
+        public CreateClientCommandHandle(IRepositoryAsync<Client> repositoryAsync, IMapper mapper)
+        {
+            _repositoryAsync = repositoryAsync;
+            _mapper = mapper;
+        }
+        /// <summary>
+        /// First the clientCommand is mapped to a Client class and 
+        /// the result is sent through the _repositoryAsync to query the DB.
+        /// And the result is returned to the client
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<Response<int>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var newRegister = _mapper.Map<Client>(request);
+            var data = await _repositoryAsync.AddAsync(newRegister);
+
+            return new Response<int>(data.ClientId);
         }
     }
 }
