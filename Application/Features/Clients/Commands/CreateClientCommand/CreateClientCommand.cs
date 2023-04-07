@@ -39,21 +39,19 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
         /// _repositoryAsync will help us to bring all the functionalities with the DB context
         /// _mapper will help us to map and bring from the GeneralProfile class the mappings we have for the client class.
         /// </summary>
-        private readonly IRepositoryAsync<Client> _clientRepositoryAsync;
         private readonly IRepositoryAsync<User> _userRepositoryAsync;
         private readonly IMapper _mapper;
 
-        public CreateClientCommandHandle(IRepositoryAsync<Client> clientRepositoryAsync, IMapper mapper, IRepositoryAsync<User> userRepositoryAsync)
+        public CreateClientCommandHandle(IMapper mapper, IRepositoryAsync<User> userRepositoryAsync)
         {
-            _clientRepositoryAsync = clientRepositoryAsync;
             _mapper = mapper;
             _userRepositoryAsync = userRepositoryAsync;
         }
-        /// <summary>
+        /// <Handle>
         /// First the clientCommand is mapped to a Client class and 
         /// the result is sent through the _repositoryAsync to query the DB.
         /// And the result is returned to the client
-        /// </summary>
+        /// </Handle>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
