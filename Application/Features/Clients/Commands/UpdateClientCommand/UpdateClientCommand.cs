@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
+using Application.Specifications;
 using Application.Wrappres;
 using AutoMapper;
 using Domain.Entities;
@@ -35,20 +36,19 @@ namespace Application.Features.Clients.Commands.UpdateClientCommand
         /// <returns></returns>
         public async Task<Response<int>> Handle(UpdateClientCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepositoryAsync.GetByIdAsync(request.userDto.UserId) ?? throw new KeyNotFoundException($"User not found for id: {request.userDto.UserId}");
+            var user = await _userRepositoryAsync.GetBySpecAsync(new ClientSpecification(request.userDto.UserId)) ?? throw new KeyNotFoundException($"User not found for id: {request.userDto.UserId}");
             
             user.UserName = request.userDto.UserName;
             user.Password = request.userDto.Password;
             user.Level = request.userDto.Level;
-            user.Client.DocumentNumber = request.userDto.ClientDto.DocumentNumber;
-            user.Client.DocumentComplement = request.userDto.ClientDto.DocumentComplement;
-            user.Client.Name = request.userDto.ClientDto.Name;
-            user.Client.Lastname = request.userDto.ClientDto.Lastname;
-            user.Client.SecondLastName = request.userDto.ClientDto.SecondLastName;
-            user.Client.Birthday = request.userDto.ClientDto.Birthday;
-            user.Client.Email = request.userDto.ClientDto.Email;
-            user.Client.Addres = request.userDto.ClientDto.Addres;
-
+            user.Client.DocumentNumber = request.userDto.Client.DocumentNumber;
+            user.Client.DocumentComplement = request.userDto.Client.DocumentComplement;
+            user.Client.Name = request.userDto.Client.Name;
+            user.Client.Lastname = request.userDto.Client.Lastname;
+            user.Client.SecondLastName = request.userDto.Client.SecondLastName;
+            user.Client.Birthday = request.userDto.Client.Birthday;
+            user.Client.Email = request.userDto.Client.Email;
+            user.Client.Addres = request.userDto.Client.Addres;
             await _userRepositoryAsync.UpdateAsync(user);
 
             return new Response<int>(user.UserId, "client successfully updated");

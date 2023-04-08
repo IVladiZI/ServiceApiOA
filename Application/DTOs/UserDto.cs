@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Application.DTOs
@@ -15,6 +16,6 @@ namespace Application.DTOs
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public int Level { get; set; }
-        public ClientDto? ClientDto { get; set; }
+        public ClientDto? Client { get; set; }
     }
 }

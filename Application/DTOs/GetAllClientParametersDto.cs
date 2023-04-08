@@ -9,7 +9,7 @@ namespace Application.DTOs
 {
     public class GetAllClientParametersDto : RequestParameter
     {
-        public string Name { get; set; }
-        public string DocumentNumber { get; set; }
+        public string? Name { get; set; }
+        public string? DocumentNumber { get; set; }
     }
 }

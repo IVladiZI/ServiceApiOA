@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
+using Application.Specifications;
 using Application.Wrappres;
 using AutoMapper;
 using Domain.Entities;
@@ -27,7 +28,7 @@ namespace Application.Features.Clients.Queries.GetClientById
 
         public async Task<Response<UserDto>> Handle(GetClientByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepositoryAsync.GetByIdAsync(request.UserId) ?? throw new KeyNotFoundException($"User not found for id: {request.UserId}");
+            var user = await _userRepositoryAsync.GetBySpecAsync(new ClientSpecification(request.UserId)) ?? throw new KeyNotFoundException($"User not found for id: {request.UserId}");
             var userDto = _mapper.Map<UserDto>(user);
             return new Response<UserDto>(userDto);
         }

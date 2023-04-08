@@ -13,10 +13,15 @@ namespace Application.Mapping
         /// </GeneralProfile>
         public GeneralProfile() 
         {
-            //Maping Dtos
+            //Maping Entiti to Dto
             CreateMap<User, UserDto>();
-            //Maping Comands
+            CreateMap<Client, ClientDto>();
+            //Maping Dto to Entiti
+            CreateMap<UserDto, User>();
+            CreateMap<ClientDto, Client>();
+            //Maping Comands to Entiti
             CreateMap<CreateClientCommand, Client>();
+            CreateMap<CreateClientCommand, User>();
         }
     }
 }

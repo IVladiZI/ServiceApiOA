@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs;
+using Application.Interfaces;
 using Application.Wrappres;
 using AutoMapper;
 using Domain.Entities;
@@ -18,14 +19,7 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
     /// </CreateClientCommand>
     public class CreateClientCommand : IRequest<Response<int>>
     {
-        public string? DocumentNumber { get; set; }
-        public string? DocumentComplement { get; set; }
-        public string? Name { get; set; }
-        public string? Lastname { get; set; }
-        public string? SecondLastName { get; set; }
-        public DateTime Birthday { get; set; }
-        public string? Email { get; set; }
-        public string? Addres { get; set; }
+        public UserDto userDto { get; set; }
     }
     /// <CreateClientCommandHandle>
     /// when the command controller is called it will execute the handler or mediator "Handle".
@@ -57,14 +51,7 @@ namespace Application.Features.Clients.Commands.CreateClientCommand
         /// <returns></returns>
         public async Task<Response<int>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
-            var newClient = _mapper.Map<Client>(request);
-            User newUser = new()
-            {
-                Client = newClient,
-                UserName = $"{newClient.Name[..1].ToUpper()}{newClient.Lastname.ToUpper()}",
-                Password = newClient.DocumentNumber,
-                Level = 1 
-            };
+            var newUser = _mapper.Map<User>(request.userDto);
             var dataUser = await _userRepositoryAsync.AddAsync(newUser);
             return new Response<int>(dataUser.UserId);
         }
