@@ -32,6 +32,13 @@ namespace Persistence
             ///no matter the type of dependency that is passed to it, it will always be implemented with these first two
             ///</AddTransient>
             services.AddTransient(typeof(IRepositoryAsync<>), typeof(MyRepositoryAsync<>));
+            ///<AddTransient>
+            ///With this we implement the connection with Redis Cache to avoid excessive queries to the database.
+            ///</AddTransient>
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetValue<string>("Cache:RedisConnection");
+            });
         }
     }
 }

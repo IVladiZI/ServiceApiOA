@@ -21,7 +21,7 @@ namespace Domain.Entities
         public string Lastname { get; set; }
         public string SecondLastName { get; set; }
         public DateTime Birthday { get; set; }
-        private int _age { get; set; }
+        //private int _age { get; set; }
         public string? Email { get; set; }
         public string? Addres { get; set; }
         public int UserId { get; set; }
@@ -35,13 +35,18 @@ namespace Domain.Entities
         /// <Age>
         /// Customer's age is calculated
         /// </Age>
+        /*
         public int Age
         {
             get { 
                 if (this._age <= 0) this._age = new DateTime(DateTime.Now.Subtract(this.CreateDate).Ticks).Year - 1; 
                 return this._age;
             }
+            set
+            {
+                this._age = value;
+            }
         }
-
+        */
     }
 }

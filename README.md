@@ -15,6 +15,7 @@ First install with the manage packages install the following plugins:
 * Ardalis.Specification - This nugget will be installed in the application layer and will allow us to manage the Repository Pattern that helps us to manage the management with the database through a generic repository.
 * Ardalis.Specification.EntityFrameworkCore- This nugget will be installed in the Persistence layer and will allow us to manage the Repository Pattern which helps us to manage the database management through a generic repository.
 * Microsoft.EntityFrameworkCore.Tools - We install this nugget in the WepApi layer which will help us for the migration with the DB.
+* Microsoft.Extensions.Caching.StackExchangeRedis - We install this nugget in the persistence layer 
 
 **#Steps to start the migrations BD ⌨**
 
