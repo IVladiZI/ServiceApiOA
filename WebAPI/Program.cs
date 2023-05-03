@@ -58,7 +58,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+//We added to make it possible to authenticate through a JWT for each controller
+app.UseAuthentication();
 app.UseAuthorization();
 //We call UseErrorHandlingMiddleware that we created to customize the API type errors from
 //the program, since this is where the API is started
