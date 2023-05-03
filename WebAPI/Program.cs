@@ -1,8 +1,10 @@
 using Application;
+using Identity;
+using Identity.Model;
+using Identity.Seeds;
+using Microsoft.AspNetCore.Identity;
 using Persistence;
-using Persistence.Contexts;
 using Shared;
-using System.Reflection;
 using WebAPI.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,9 +23,32 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddSharedInfraestructure(builder.Configuration);
 //We inject the class that calls persistence and we send it the appsettings.json configuration
 builder.Services.AddPersistenceInfraestructure(builder.Configuration);
+//Inject the JWT authentication class configuration and JWT configuration in Identity
+builder.Services.AddIdentityInfraestructure(builder.Configuration);
 
 var app = builder.Build();
-//
+//Insert and register User Roles
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        //Create automatic user and roles in the database
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        //The role and type of user are configured in the database.
+        await DefaultRoles.SeedAsync(userManager, roleManager);
+        await DefaultAdminUser.SeedAsync(userManager, roleManager);
+        await DefaultBasicUser.SeedAsync(userManager, roleManager);
+    }
+    catch (Exception ex)
+    {
+
+        throw ex;
+    }
+}
+
+//configure connection DataBase
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
